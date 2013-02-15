@@ -18,7 +18,7 @@ build() {
 }
 
 package() {
-    cd $srcdir/$pkgname-$pkgver
+    cd "$srcdir/$pkgname-$pkgver"
     install -Dm755 clide "${pkgdir}/usr/bin/${pkgname}"
     install -Dm644 clide.1 "${pkgdir}/usr/share/man/man1/${pkgname}.1"
     for doc in $_docs; do
