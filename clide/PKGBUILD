@@ -1,0 +1,34 @@
+# Maintainer: nil0x42 <nil0x42 at gmail dot com>
+pkgname=clide
+pkgver=0.9
+pkgrel=1
+pkgdesc="Color and style highlighting program for text"
+arch=('i686' 'x86_64')
+url="http://suso.suso.org/xulu/Clide"
+license=('GPL3')
+depends=('perl')
+source=(http://suso.suso.org/programs/${pkgname}/downloads/${pkgname}-${pkgver}.tar.gz)
+md5sums=('f578b8c5f1b7f81c7280fcb549ca93c8')
+
+_docs='CHANGELOG COPYING GOALS IDEAS README WARNING LICENSE'
+
+build() {
+    cd $srcdir/$pkgname-$pkgver
+    # generale manual page from ./clide source
+    pod2man clide > clide.1 || return 1
+    # Replace oudated LICENSE, which states that clide is GPLv2+;
+    # upstream has confirmed that clide is GPLv3+, as the script itself says
+    cp /usr/share/licenses/common/GPL3/license.txt LICENSE
+}
+
+package() {
+    cd $srcdir/$pkgname-$pkgver
+    install -d ${pkgdir}/usr/bin/
+    install -d ${pkgdir}/usr/share/man/man1/
+    install -d ${pkgdir}/usr/share/doc/${pkgname}/
+    # install binary
+    install -m 755 clide ${pkgdir}/usr/bin/
+    # install man and documentation
+    install -m 644 clide.1 ${pkgdir}/usr/share/man/man1/
+    install -m 644 $_docs ${pkgdir}/usr/share/doc/${pkgname}/
+}
