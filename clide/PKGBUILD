@@ -1,4 +1,4 @@
-# Maintainer: nil0x42 <nil0x42 at gmail dot com>
+# Maintainer: nil0x42 <http://goo.gl/kb2wf>
 pkgname=clide
 pkgver=0.9
 pkgrel=1
@@ -7,28 +7,19 @@ arch=('i686' 'x86_64')
 url="http://suso.suso.org/xulu/Clide"
 license=('GPL3')
 depends=('perl')
-source=(http://suso.suso.org/programs/${pkgname}/downloads/${pkgname}-${pkgver}.tar.gz)
+source=("http://suso.suso.org/programs/${pkgname}/downloads/${pkgname}-${pkgver}.tar.gz")
 md5sums=('f578b8c5f1b7f81c7280fcb549ca93c8')
 
-_docs='CHANGELOG COPYING GOALS IDEAS README WARNING LICENSE'
+_docs='CHANGELOG COPYING GOALS IDEAS README WARNING'
 
 build() {
-    cd $srcdir/$pkgname-$pkgver
-    # generale manual page from ./clide source
-    pod2man clide > clide.1 || return 1
-    # Replace oudated LICENSE, which states that clide is GPLv2+;
-    # upstream has confirmed that clide is GPLv3+, as the script itself says
-    cp /usr/share/licenses/common/GPL3/license.txt LICENSE
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    pod2man clide > clide.1
 }
 
 package() {
     cd $srcdir/$pkgname-$pkgver
-    install -d ${pkgdir}/usr/bin/
-    install -d ${pkgdir}/usr/share/man/man1/
-    install -d ${pkgdir}/usr/share/doc/${pkgname}/
-    # install binary
-    install -m 755 clide ${pkgdir}/usr/bin/
-    # install man and documentation
-    install -m 644 clide.1 ${pkgdir}/usr/share/man/man1/
-    install -m 644 $_docs ${pkgdir}/usr/share/doc/${pkgname}/
+    install -Dm755 clide "${pkgdir}/usr/bin/"
+    install -Dm644 clide.1 "${pkgdir}/usr/share/man/man1/"
+    install -Dm644 $_docs "${pkgdir}/usr/share/doc/${pkgname}/"
 }
